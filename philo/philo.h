@@ -11,16 +11,15 @@
 # define GREEN "\033[38;2;122;239;122m"
 # define BLUE "\033[38;2;122;165;239m"
 # define WHITE "\033[38;2;255;255;255m"
+# define DARK "\033[38;2;175;0;0m"
 
 
 typedef struct philo_s
 {
 	pthread_t	tid;
-	int		id;
 	long		time_to_die;
 	long		time_to_eat;
 	long		time_to_sleep;
-	int		n;
 } philo_t;
 
 

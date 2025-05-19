@@ -38,11 +38,22 @@ void	simulation(philo_t *philo, int size)
 philo_t	*initPhilosophers(char **argv)
 {
 	philo_t		*philo;
+	int		id;
+	int		amount;
 
+	amount = ft_atoi(argv[1]);
 	if (isNumber(argv[1]))
-		philo = malloc(sizeof(philo_t) * ft_atoi(argv[1]));
+		philo = malloc(sizeof(philo_t) * amount);
 	else
 		return (error("Can't allocate memory", NULL));
+	id = 0;
+	while (id < amount)
+	{
+		philo[id].time_to_die = ft_atoi(argv[2]);
+		philo[id].time_to_eat = ft_atoi(argv[3]);
+		philo[id].time_to_sleep = ft_atoi(argv[4]);
+		id++;
+	}
 	return (philo);
 }
 
