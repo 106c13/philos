@@ -14,20 +14,22 @@
 # define DARK "\033[38;2;175;0;0m"
 
 
-typedef struct philo_s
+typedef struct s_philo
 {
-	pthread_t	tid;
-	long		time_to_die;
-	long		time_to_eat;
-	long		time_to_sleep;
-} philo_t;
-
+	int				id;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_sleep;
+	long			start_time;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+}	philo_t;
 
 
 // main.c
 long	currentTime();
 long	passedTime(long start_time);
-void	simulation();
+void	*simulation();
 
 
 // utils.c
