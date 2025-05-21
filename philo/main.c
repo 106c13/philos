@@ -14,22 +14,38 @@ long	passedTime(long start_time)
 	return (currentTime() - start_time);
 }
 
+
+void	*monitor(void *arg)
+{
+	philo_t	*philo;
+	int	i;
+
+	philo = (philo_t *)arg;
+	while (1)
+	{
+	}
+	return (NULL);
+}
+
 void	*simulation(void *arg)
 {
 	philo_t	*philo = (philo_t *)arg;
 	long	start_time = philo->start_time;
-
+	
+	if (philo->id % 2 == 0)
+		usleep(10);
 	while (1)
 	{
 		printf("%s%ld %d is thinking\n", GREEN, passedTime(start_time), philo->id);
-		pthread_mutex_lock(philo->left_fork);
-		printf("%s%ld %d has taken a fork\n", WHITE, passedTime(start_time), philo->id);
 		pthread_mutex_lock(philo->right_fork);
+		printf("%s%ld %d has taken a fork\n", WHITE, passedTime(start_time), philo->id);
+		pthread_mutex_lock(philo->left_fork);
 		printf("%s%ld %d has taken a fork\n", WHITE, passedTime(start_time), philo->id);
 		printf("%s%ld %d is eating\n", RED, passedTime(start_time), philo->id);
 		usleep(philo->time_to_eat * 1000);
-		pthread_mutex_unlock(philo->left_fork);
+		philo->last_time_eat = currentTime();
 		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
 		printf("%s%ld %d is sleeping\n", BLUE, passedTime(start_time), philo->id);
 		usleep(philo->time_to_sleep * 1000);
 	}
@@ -88,8 +104,9 @@ int	main(int argc, char **argv)
 		{
 			philo[i].id = i + 1;
 			philo[i].start_time = start_time;
-			philo[i].left_fork = &forks[i];
-			philo[i].right_fork = &forks[(i + 1) % num_philos];
+			philo[i].last_time_eat = -1;
+			philo[i].right_fork = &forks[i];
+			philo[i].left_fork = &forks[(i + 1) % num_philos];
 			pthread_create(&threads[i], NULL, simulation, &philo[i]);
 			i++;
 		}

@@ -7,7 +7,7 @@ unsigned int	ft_atoi(char *str)
 	num = 0;
 	while (*str)
 	{
-		num += num * 10 + *str - 48;
+		num = num * 10 + *str - 48;
 		str++;
 	}
 	return (num);

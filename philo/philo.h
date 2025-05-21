@@ -21,6 +21,7 @@ typedef struct s_philo
 	long			time_to_eat;
 	long			time_to_sleep;
 	long			start_time;
+	long			last_time_eat;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 }	philo_t;
