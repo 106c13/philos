@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/22 22:25:45 by haaghaja          #+#    #+#             */
+/*   Updated: 2025/05/22 22:25:46 by haaghaja         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -21,8 +33,11 @@ typedef struct vars_s
 	long	time_to_eat;
 	long	time_to_sleep;
 	long	start_time;
+	long	f;
 	int		simulation_end;
+	int		num;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	log_mutex;
 }	vars_t;
 
 typedef struct philo_s
@@ -43,6 +58,7 @@ void	*simulation();
 // utils.c
 unsigned int	ft_atoi(char *str);
 int	isNumber(char *str);
-void	*error(char *str, void *ptr);
+void	*ft_exit(void *ptr);
+void	ft_print(char *str, char *color, philo_t *philo);
 
 #endif
