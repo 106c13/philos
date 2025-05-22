@@ -14,20 +14,26 @@
 # define DARK "\033[38;2;175;0;0m"
 # define DEBUG "\033[38;2;17;242;46m"
 
-typedef struct s_philo
+typedef struct vars_s
+{
+
+	long	time_to_die;
+	long	time_to_eat;
+	long	time_to_sleep;
+	long	start_time;
+	int		simulation_end;
+	pthread_mutex_t	*forks;
+}	vars_t;
+
+typedef struct philo_s
 {
 	int				id;
-	long			time_to_die;
-	long			time_to_eat;
-	long			time_to_sleep;
-	long			start_time;
 	long			last_time_eat;
-	int			simulation_end;
+	vars_t	*vars;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 }	philo_t;
 
-typedef struct s_monitor
 // main.c
 long	currentTime();
 long	passedTime(long start_time);
