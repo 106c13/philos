@@ -53,7 +53,7 @@ void	ft_print(char *str, char *color, philo_t *philo)
 {
 	pthread_mutex_lock(&philo->vars->log_mutex);
 	if (!philo->vars->simulation_end)
-		printf("%s%ld %d %s\n", color, passedTime(philo->vars->start_time),
+		printf("%s%ld %d %s\n", color, passed_time(philo->vars->start_time),
 			philo->id, str);
 	pthread_mutex_unlock(&philo->vars->log_mutex);
 }

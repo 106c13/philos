@@ -52,8 +52,8 @@ typedef struct philo_s
 }	philo_t;
 
 // main.c
-long	currentTime();
-long	passedTime(long start_time);
+long	current_time();
+long	passed_time(long start_time);
 void	*simulation();
 
 
@@ -62,5 +62,23 @@ unsigned int	ft_atoi(char *str);
 int	isNumber(char *str);
 void	*ft_exit(void *ptr);
 void	ft_print(char *str, char *color, philo_t *philo);
+
+
+// philo_utils.c
+void	increment_total(vars_t *vars);
+void	*simulation(void *arg);
+int	philo_take_forks(philo_t *philo);
+int	philo_eat(philo_t *philo, int n);
+int	philo_sleep(philo_t *philo);
+
+// init.c
+pthread_mutex_t	*initForks(int num);
+void	init_vars(int argc, char **argv, vars_t *vars);
+philo_t	*init_philosophers(int	argc, char **argv, vars_t *vars);
+
+// time.c
+long	current_time(void);
+long	passed_time(long start_time);
+void	unlock_forks(philo_t philo);
 
 #endif

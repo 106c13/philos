@@ -1,0 +1,57 @@
+#include "philo.h"
+
+pthread_mutex_t	*init_forks(int num)
+{
+	pthread_mutex_t	*forks;
+
+	forks = malloc(sizeof(pthread_mutex_t) * num);
+	if (!forks)
+		return (NULL);
+	while (num > 0)
+	{
+		num--;
+		pthread_mutex_init(&forks[num], NULL);
+	}
+	return (forks);
+}
+
+void	init_vars(int argc, char **argv, vars_t *vars)
+{
+	vars->num = ft_atoi(argv[1]);
+	vars->time_to_die = ft_atoi(argv[2]);
+	vars->time_to_eat = ft_atoi(argv[3]);
+	vars->time_to_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		vars->number_of_meals = ft_atoi(argv[5]);
+	else
+		vars->number_of_meals = -1;
+	vars->total = 0;
+	vars->simulation_end = 0;
+	vars->forks = init_forks(vars->num);
+	pthread_mutex_init(&vars->log_mutex, NULL);
+	pthread_mutex_init(&vars->meal_mutex, NULL);
+}
+
+philo_t	*init_philosophers(int argc, char **argv, vars_t *vars)
+{
+	int		id;
+	philo_t	*philo;
+
+	init_vars(argc, argv, vars);
+	if (!vars->forks)
+		return (NULL);
+	philo = malloc(sizeof(philo_t) * (vars->num + 1));
+	if (!philo)
+		return (ft_exit(vars->forks));
+	id = 0;
+	while (id < vars->num)
+	{
+		philo[id].id = id + 1;
+		philo[id].vars = vars;
+		philo[id].right_fork = &(vars->forks[id]);
+		philo[id].left_fork = &(vars->forks[(id + 1) % vars->num]);
+		id++;
+	}
+	philo[id].id = -1;
+	return (philo);
+}
