@@ -33,11 +33,13 @@ typedef struct vars_s
 	long	time_to_eat;
 	long	time_to_sleep;
 	long	start_time;
-	long	f;
 	int		simulation_end;
 	int		num;
+	int		number_of_meals;
+	int		total;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	log_mutex;
+	pthread_mutex_t	meal_mutex;
 }	vars_t;
 
 typedef struct philo_s

@@ -37,6 +37,14 @@ void	unlock_forks(philo_t philo)
 	}
 }
 
+
+void	increment_total(vars_t *vars)
+{
+	pthread_mutex_lock(&vars->meal_mutex);
+	vars->total++;
+	pthread_mutex_unlock(&vars->meal_mutex);
+}
+
 void	*monitor(void *arg)
 {
 	philo_t	*philo;
@@ -50,7 +58,7 @@ void	*monitor(void *arg)
 		if (philo[i].id == -1)
 			i = 0;
 		ct = currentTime();
-		if (ct - philo[i].last_time_eat > philo[i].vars->time_to_die)
+		if (ct - philo[i].last_time_eat > philo[i].vars->time_to_die || (philo[i].vars->total > philo[i].vars->number_of_meals && philo[i].vars->number_of_meals != -1))
 		{
 			pthread_mutex_lock(&philo[i].vars->log_mutex);
 			printf("%s%ld %d died\n", DARK, passedTime(philo[i].vars->start_time), philo[i].id);
@@ -77,7 +85,7 @@ int	philo_take_forks(philo_t *philo)
 	return (1);
 }
 
-int	philo_eat(philo_t *philo)
+int	philo_eat(philo_t *philo, int n)
 {	
 	if (!philo_take_forks(philo))
 		return (0);
@@ -88,6 +96,8 @@ int	philo_eat(philo_t *philo)
 	philo->last_time_eat = currentTime();
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
+	if (n != philo->vars->number_of_meals)
+		increment_total(philo->vars);
 	return (1);
 }
 
@@ -102,15 +112,19 @@ int	philo_sleep(philo_t *philo)
 
 void	*simulation(void *arg)
 {
-	philo_t	*philo = (philo_t *)arg;
-	
+	philo_t *philo;
+	int	n;
+
+	n = 0;
+	philo = (philo_t *)arg;
 	if (philo->id % 2 == 0)
 		usleep(300);
 	while (!philo->vars->simulation_end)
 	{
 		ft_print("is thinking", GREEN, philo);
-		if (!philo_eat(philo))
+		if (!philo_eat(philo, n))
 			break ;
+		n++;
 		if (!philo_sleep(philo))
 			break ;
 	}
@@ -133,24 +147,30 @@ pthread_mutex_t	*initForks(int	num)
 	return (forks);
 }
 
-void	initVars(char **argv, vars_t *vars)
+void	initVars(int argc, char **argv, vars_t *vars)
 {	
 	vars->num = ft_atoi(argv[1]);
 	vars->time_to_die = ft_atoi(argv[2]);
 	vars->time_to_eat = ft_atoi(argv[3]);
 	vars->time_to_sleep = ft_atoi(argv[4]);
+	if (argc == 6)
+		vars->number_of_meals = ft_atoi(argv[5]);
+	else
+		vars->number_of_meals = -1;
+	vars->total = 0;
 	vars->simulation_end = 0;
 	vars->forks = initForks(vars->num);
 	pthread_mutex_init(&vars->log_mutex, NULL);
+	pthread_mutex_init(&vars->meal_mutex, NULL);
 }
 
 
-philo_t	*initPhilosophers(char **argv, vars_t *vars)
+philo_t	*initPhilosophers(int	argc, char **argv, vars_t *vars)
 {
 	int		id;
 	philo_t		*philo;
 
-	initVars(argv, vars);
+	initVars(argc, argv, vars);
 	if (!vars->forks)
 		return (NULL);
 	philo = malloc(sizeof(philo_t) * (vars->num + 1));
@@ -224,7 +244,7 @@ int	main(int argc, char **argv)
 
 	if (argc == 5 || argc == 6)
 	{
-		philo = initPhilosophers(argv, &vars);
+		philo = initPhilosophers(argc, argv, &vars);
 		if (philo)
 			startDining(philo, philo[0].vars);
 	}
