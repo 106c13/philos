@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/22 22:25:40 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/24 18:59:38 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	*monitor(void *arg)
 {
-	philo_t	*philo;
+	t_philo	*philo;
 	int		i;
 	long	ct;
 
-	philo = (philo_t *)arg;
+	philo = (t_philo *)arg;
 	i = 0;
 	while (1)
 	{
@@ -27,8 +27,8 @@ void	*monitor(void *arg)
 		ct = current_time();
 		if (ct - philo[i].last_time_eat > philo[i].vars->time_to_die || (philo[i].vars->total / philo[i].vars->num >= philo[i].vars->number_of_meals && philo[i].vars->number_of_meals != -1))
 		{
+			ft_print("died", DARK, &philo[i]);
 			pthread_mutex_lock(&philo[i].vars->log_mutex);
-			printf("%s%ld %d died\n", DARK, passed_time(philo[i].vars->start_time), philo[i].id);
 			philo[i].vars->simulation_end = 1;
 			unlock_forks(philo[0]);
 			pthread_mutex_unlock(&philo[i].vars->log_mutex);
@@ -39,28 +39,27 @@ void	*monitor(void *arg)
 	return (NULL);
 }
 
-int	lone_philo(philo_t *philo)
+int	lone_philo(t_philo *philo)
 {
 	philo[0].vars->start_time = current_time();
 	pthread_mutex_lock(philo[0].left_fork);
-	printf("%s%ld %d has taken a fork\n", WHITE, passed_time(philo[0].vars->start_time), philo[0].id);
+	ft_print("has taken a fork", WHITE, &philo[0]);
 	usleep(philo[0].vars->time_to_die * 1000);
-	printf("%s%ld %d died\n", DARK, passed_time(philo[0].vars->start_time), philo[0].id);
+	ft_print("died", DARK, &philo[0]);
 	pthread_mutex_unlock(philo[0].left_fork);
 	free(philo[0].vars->forks);
 	free(philo);
 	return (1);
 }
 
-int	start_dining(philo_t *philo, vars_t *vars)
+int	start_dining(t_philo *philo, t_vars *vars)
 {
 	pthread_t	*threads;
-	pthread_t	mthread;
 	int			i;
 
 	if (vars->num == 1)
 		return (lone_philo(philo));
-	threads = malloc(sizeof(pthread_t) * vars->num);
+	threads = malloc(sizeof(pthread_t) * (vars->num + 1));
 	if (!philo || !threads)
 		return (0);
 	i = 0;
@@ -71,14 +70,8 @@ int	start_dining(philo_t *philo, vars_t *vars)
 		pthread_create(&threads[i], NULL, simulation, &philo[i]);
 		i++;
 	}
-	pthread_create(&mthread, NULL, monitor, philo);
-	i = 0;
-	while (i < vars->num)
-	{
-		pthread_join(threads[i], NULL);
-		i++;
-	}
-	pthread_join(mthread, NULL);
+	pthread_create(&threads[vars->num], NULL, monitor, philo);
+	join_threads(threads, vars->num + 1);
 	free(threads);
 	free(philo[0].vars->forks);
 	free(philo);
@@ -87,8 +80,8 @@ int	start_dining(philo_t *philo, vars_t *vars)
 
 int	main(int argc, char **argv)
 {
-	philo_t	*philo;
-	vars_t	vars;
+	t_philo	*philo;
+	t_vars	vars;
 
 	if (argc == 5 || argc == 6)
 	{
@@ -97,6 +90,6 @@ int	main(int argc, char **argv)
 			start_dining(philo, philo[0].vars);
 	}
 	else
-		printf("Usage: ./philo num_philos time_to_die time_to_eat time_to_sleep [optional: num_times_each_philo_must_eat]\n");
+		printf("Usage: ./philo n t_die t_eat t_sleep [n_eat]\n");
 	return (0);
 }

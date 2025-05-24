@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:33 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/22 22:26:42 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/24 18:30:34 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	*ft_exit(void *ptr)
 	return (NULL);
 }
 
-void	ft_print(char *str, char *color, philo_t *philo)
+void	ft_print(char *str, char *color, t_philo *philo)
 {
 	pthread_mutex_lock(&philo->vars->log_mutex);
 	if (!philo->vars->simulation_end)

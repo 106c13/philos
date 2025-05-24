@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/24 19:02:30 by haaghaja          #+#    #+#             */
+/*   Updated: 2025/05/24 19:02:32 by haaghaja         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 pthread_mutex_t	*init_forks(int num)
@@ -15,7 +27,7 @@ pthread_mutex_t	*init_forks(int num)
 	return (forks);
 }
 
-void	init_vars(int argc, char **argv, vars_t *vars)
+void	init_vars(int argc, char **argv, t_vars *vars)
 {
 	vars->num = ft_atoi(argv[1]);
 	vars->time_to_die = ft_atoi(argv[2]);
@@ -32,15 +44,15 @@ void	init_vars(int argc, char **argv, vars_t *vars)
 	pthread_mutex_init(&vars->meal_mutex, NULL);
 }
 
-philo_t	*init_philosophers(int argc, char **argv, vars_t *vars)
+t_philo	*init_philosophers(int argc, char **argv, t_vars *vars)
 {
 	int		id;
-	philo_t	*philo;
+	t_philo	*philo;
 
 	init_vars(argc, argv, vars);
 	if (!vars->forks)
 		return (NULL);
-	philo = malloc(sizeof(philo_t) * (vars->num + 1));
+	philo = malloc(sizeof(t_philo) * (vars->num + 1));
 	if (!philo)
 		return (ft_exit(vars->forks));
 	id = 0;

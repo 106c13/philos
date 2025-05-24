@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:45 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/22 22:25:46 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/24 18:56:22 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,59 +26,57 @@
 # define DARK "\033[38;2;175;0;0m"
 # define DEBUG "\033[38;2;17;242;46m"
 
-typedef struct vars_s
+typedef struct s_vars
 {
-
-	long	time_to_die;
-	long	time_to_eat;
-	long	time_to_sleep;
-	long	start_time;
-	int		simulation_end;
-	int		num;
-	int		number_of_meals;
-	int		total;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_to_sleep;
+	long			start_time;
+	int				simulation_end;
+	int				num;
+	int				number_of_meals;
+	int				total;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	log_mutex;
 	pthread_mutex_t	meal_mutex;
-}	vars_t;
+}	t_vars;
 
-typedef struct philo_s
+typedef struct s_philo
 {
 	int				id;
 	long			last_time_eat;
-	vars_t	*vars;
+	t_vars			*vars;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-}	philo_t;
+}	t_philo;
 
 // main.c
-long	current_time();
+long	current_time(void);
 long	passed_time(long start_time);
-void	*simulation();
-
 
 // utils.c
+void		*ft_exit(void *ptr);
+void		ft_print(char *str, char *color, t_philo *philo);
 unsigned int	ft_atoi(char *str);
-int	isNumber(char *str);
-void	*ft_exit(void *ptr);
-void	ft_print(char *str, char *color, philo_t *philo);
-
+int			isNumber(char *str);
 
 // philo_utils.c
-void	increment_total(vars_t *vars);
+void	increment_total(t_vars *vars);
 void	*simulation(void *arg);
-int	philo_take_forks(philo_t *philo);
-int	philo_eat(philo_t *philo, int n);
-int	philo_sleep(philo_t *philo);
+int		t_philoake_forks(t_philo *philo);
+int		philo_eat(t_philo *philo, int n);
+int		philo_sleep(t_philo *philo);
 
 // init.c
 pthread_mutex_t	*initForks(int num);
-void	init_vars(int argc, char **argv, vars_t *vars);
-philo_t	*init_philosophers(int	argc, char **argv, vars_t *vars);
+t_philo	*init_philosophers(int argc, char **argv, t_vars *vars);
 
 // time.c
 long	current_time(void);
 long	passed_time(long start_time);
-void	unlock_forks(philo_t philo);
+void	unlock_forks(t_philo philo);
+
+// system.h
+void	join_threads(pthread_t *threads, int n);
 
 #endif
