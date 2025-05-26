@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:45 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/24 18:56:22 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:08:22 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ long	current_time(void);
 long	passed_time(long start_time);
 
 // utils.c
-void		*ft_exit(void *ptr);
-void		ft_print(char *str, char *color, t_philo *philo);
-unsigned int	ft_atoi(char *str);
-int			isNumber(char *str);
+void	*ft_exit(void *ptr);
+void	ft_print(char *str, char *color, t_philo *philo);
+int		ft_atoi(char *str);
+int		isNumber(char *str);
 
 // philo_utils.c
 void	increment_total(t_vars *vars);
@@ -68,15 +68,21 @@ int		philo_eat(t_philo *philo, int n);
 int		philo_sleep(t_philo *philo);
 
 // init.c
-pthread_mutex_t	*initForks(int num);
 t_philo	*init_philosophers(int argc, char **argv, t_vars *vars);
+void	initForks(int num, pthread_mutex_t *forks);
 
 // time.c
 long	current_time(void);
 long	passed_time(long start_time);
-void	unlock_forks(t_philo philo);
+void	unlock_forks(t_vars *vars);
 
 // system.h
 void	join_threads(pthread_t *threads, int n);
+int		error(char *msg);
 
+// validate.c
+int		is_valid(int argc, char **argv);
+
+// monitor.c
+void	*monitor(void *arg);
 #endif

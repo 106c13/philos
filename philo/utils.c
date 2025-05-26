@@ -6,13 +6,13 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:33 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/24 18:30:34 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/26 17:02:49 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-unsigned int	ft_atoi(char *str)
+int	ft_atoi(char *str)
 {
 	unsigned int	num;
 
@@ -34,12 +34,6 @@ int	is_number(char *str)
 		str++;
 	}
 	return (1);
-}
-
-void	*error(char *str, void *ptr)
-{
-	printf("%s\n", str);
-	return (ptr);
 }
 
 void	*ft_exit(void *ptr)

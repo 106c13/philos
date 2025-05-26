@@ -1,38 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   validate.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/24 19:02:34 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/26 18:10:57 by haaghaja         ###   ########.fr       */
+/*   Created: 2025/05/26 16:23:16 by haaghaja          #+#    #+#             */
+/*   Updated: 2025/05/26 18:27:20 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	current_time(void)
-{
-	struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 1000L) + (tv.tv_usec / 1000));
-}
-
-long	passed_time(long start_time)
-{
-	return (current_time() - start_time);
-}
-
-void	unlock_forks(t_vars *vars)
+int	is_int(char *num)
 {
 	int	i;
 
 	i = 0;
-	while (i < vars->num)
+	while (num[i])
 	{
-		pthread_mutex_unlock(&vars->forks[i]);
+		if (num[i] < '0' || num[i] > '9')
+			return (0);
 		i++;
 	}
+	if (i > 0 && i < 12)
+		return (1);
+	return (0);
+}
+
+int	is_valid(int argc, char **argv)
+{
+	int	i;
+	int	val;
+
+	i = 1;
+	while (i < argc)
+	{
+		if (!is_int(argv[i]))
+			return (0);
+		val = ft_atoi(argv[i]);
+		if (val <= 0 && i != 5)
+			return (0);
+		i++;
+	}
+	return (1);
 }

@@ -6,38 +6,11 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/24 18:59:38 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/26 18:21:19 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	*monitor(void *arg)
-{
-	t_philo	*philo;
-	int		i;
-	long	ct;
-
-	philo = (t_philo *)arg;
-	i = 0;
-	while (1)
-	{
-		if (philo[i].id == -1)
-			i = 0;
-		ct = current_time();
-		if (ct - philo[i].last_time_eat > philo[i].vars->time_to_die || (philo[i].vars->total / philo[i].vars->num >= philo[i].vars->number_of_meals && philo[i].vars->number_of_meals != -1))
-		{
-			ft_print("died", DARK, &philo[i]);
-			pthread_mutex_lock(&philo[i].vars->log_mutex);
-			philo[i].vars->simulation_end = 1;
-			unlock_forks(philo[0]);
-			pthread_mutex_unlock(&philo[i].vars->log_mutex);
-			break ;
-		}
-		i++;
-	}
-	return (NULL);
-}
 
 int	lone_philo(t_philo *philo)
 {
@@ -85,9 +58,13 @@ int	main(int argc, char **argv)
 
 	if (argc == 5 || argc == 6)
 	{
+		if (!is_valid(argc, argv))
+			return (error("Error!\n"));
 		philo = init_philosophers(argc, argv, &vars);
 		if (philo)
 			start_dining(philo, philo[0].vars);
+		else
+			printf("Can't alocate memory\n");
 	}
 	else
 		printf("Usage: ./philo n t_die t_eat t_sleep [n_eat]\n");
