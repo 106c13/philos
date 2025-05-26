@@ -6,32 +6,18 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/26 18:21:19 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:34:05 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	lone_philo(t_philo *philo)
-{
-	philo[0].vars->start_time = current_time();
-	pthread_mutex_lock(philo[0].left_fork);
-	ft_print("has taken a fork", WHITE, &philo[0]);
-	usleep(philo[0].vars->time_to_die * 1000);
-	ft_print("died", DARK, &philo[0]);
-	pthread_mutex_unlock(philo[0].left_fork);
-	free(philo[0].vars->forks);
-	free(philo);
-	return (1);
-}
 
 int	start_dining(t_philo *philo, t_vars *vars)
 {
 	pthread_t	*threads;
 	int			i;
 
-	if (vars->num == 1)
-		return (lone_philo(philo));
 	threads = malloc(sizeof(pthread_t) * (vars->num + 1));
 	if (!philo || !threads)
 		return (0);

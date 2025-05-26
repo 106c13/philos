@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:02:43 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/26 18:28:05 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:35:38 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ int	t_philo_take_forks(t_philo *philo)
 		return (0);
 	pthread_mutex_lock(philo->right_fork);
 	ft_print("has taken a fork", WHITE, philo);
+	if (philo->vars->num == 1)
+	{
+		usleep(philo->vars->time_to_die);
+		pthread_mutex_unlock(philo->right_fork);
+		return (0);
+	}
 	if (philo->vars->simulation_end)
 		return (0);
 	pthread_mutex_lock(philo->left_fork);
