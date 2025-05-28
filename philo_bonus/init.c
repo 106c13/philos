@@ -6,21 +6,11 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:02:30 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/26 18:45:46 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:10:54 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	init_forks(sem_t *forks, int num)
-{
-	forks = sem_open("/forks", O_CREAT, 0644, num);
-	if (forks == SEM_FAILED) 
-	{
-		printf("Can't open semaphore\n");
-		forks = NULL;
-	}
-}
 
 void	init_vars(int argc, char **argv, t_vars *vars)
 {
@@ -34,13 +24,16 @@ void	init_vars(int argc, char **argv, t_vars *vars)
 		vars->number_of_meals = -1;
 	vars->total = 0;
 	vars->simulation_end = 0;
-	init_forks(vars->forks, vars->num);
+	sem_unlink("/forks");
+	sem_unlink("/sem_end");
+	sem_open("/forks", O_CREAT, 0644, vars->num);
+	sem_open("/sem_end", O_CREAT, 0644, 1);
 }
 
 int	init_philosophers(int argc, char **argv, t_vars *vars)
 {
 	init_vars(argc, argv, vars);
-	if (!vars->forks)
+	if (!vars)
 		return (1);
 	return (0);
 }

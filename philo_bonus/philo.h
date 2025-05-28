@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:45 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/26 18:08:22 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:15:27 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef struct s_vars
 	int				num;
 	int				number_of_meals;
 	int				total;
-	sem_t		*forks;
 }	t_vars;
 
 typedef struct s_philo
@@ -47,6 +46,9 @@ typedef struct s_philo
 	int				id;
 	long			last_time_eat;
 	t_vars			*vars;
+	sem_t		*forks;
+	sem_t		*end_sem;
+	sem_t		*total_sem;
 }	t_philo;
 
 // main.c
@@ -58,11 +60,7 @@ void	ft_print(char *str, char *color, t_philo *philo);
 int		ft_atoi(char *str);
 
 // philo_utils.c
-void	increment_total(t_vars *vars);
-void	*simulation(void *arg);
-int		t_philoake_forks(t_philo *philo);
-int		philo_eat(t_philo *philo, int n);
-int		philo_sleep(t_philo *philo);
+void	simulation(t_philo *philo);
 
 // init.c
 int		init_philosophers(int argc, char **argv, t_vars *vars);

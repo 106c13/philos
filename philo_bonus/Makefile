@@ -2,7 +2,7 @@ CC      = cc
 CFLAGS  = -Wall -Wextra -Werror
 RM      = rm -rf
 
-NAME    = philo
+NAME    = philo_bonus
 
 OBJDIR  = objs
 HEADER  = philo.h
@@ -13,6 +13,7 @@ SRC = \
 	utils.c \
 	init.c \
 	validate.c \
+	philo_utils.c
 
 OBJS = $(SRC:%.c=$(OBJDIR)/%.o)
 

@@ -6,12 +6,11 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/26 19:34:05 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/26 19:37:34 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
 
 int	start_dining(t_philo *philo, t_vars *vars)
 {
@@ -19,7 +18,7 @@ int	start_dining(t_philo *philo, t_vars *vars)
 	int			i;
 
 	threads = malloc(sizeof(pthread_t) * (vars->num + 1));
-	if (!philo || !threads)
+	if (!threads)
 		return (0);
 	i = 0;
 	vars->start_time = current_time();
