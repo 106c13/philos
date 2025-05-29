@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:02:30 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/28 17:10:54 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:36:21 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	init_vars(int argc, char **argv, t_vars *vars)
 	vars->total = 0;
 	vars->simulation_end = 0;
 	sem_unlink("/forks");
-	sem_unlink("/sem_end");
-	sem_open("/forks", O_CREAT, 0644, vars->num);
-	sem_open("/sem_end", O_CREAT, 0644, 1);
+	sem_unlink("/sim_end");
+	vars->forks = sem_open("/forks", O_CREAT, 0644, vars->num);
+	vars->end_sem = sem_open("/sim_end", O_CREAT, 0644, 0);
 }
 
 int	init_philosophers(int argc, char **argv, t_vars *vars)

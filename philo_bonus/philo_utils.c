@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:02:43 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/28 17:20:29 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/29 17:39:04 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@ int	t_philo_take_forks(t_philo *philo)
 	{
 		usleep(philo->vars->time_to_die);
 		sem_post(philo->forks);
+		sem_post(philo->end_sem);
+		sem_close(philo->forks);	
+		sem_close(philo->end_sem);	
 		return (0);
 	}
 	sem_wait(philo->forks);
@@ -42,10 +45,20 @@ int	philo_eat(t_philo *philo)
 		ft_print("is dead", DARK, philo);
 		sem_post(philo->forks);
 		sem_post(philo->forks);
+		sem_post(philo->end_sem);
 		return (0);
 	}
 	ft_print("is eating", RED, philo);
 	usleep(philo->vars->time_to_eat * 1000);
+	ct = current_time();
+	if (ct - philo->last_time_eat > philo->vars->time_to_die)
+	{
+		ft_print("is dead", DARK, philo);
+		sem_post(philo->forks);
+		sem_post(philo->forks);
+		sem_post(philo->end_sem);
+		return (0);
+	}
 	philo->last_time_eat = current_time();
 	sem_post(philo->forks);
 	sem_post(philo->forks);
