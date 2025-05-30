@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:45 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/29 17:37:09 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/30 19:19:16 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ typedef struct s_vars
 	int				total;
 	sem_t		*end_sem;
 	sem_t		*forks;
+	sem_t		*waiter;
+	sem_t		*finish_sem;
+	sem_t		*log_sem;
 }	t_vars;
 
 typedef struct s_philo
@@ -50,34 +53,28 @@ typedef struct s_philo
 	t_vars			*vars;
 	sem_t		*forks;
 	sem_t		*end_sem;
+	sem_t		*waiter;
+	sem_t		*finish_sem;
+	sem_t		*log_sem;
 }	t_philo;
-
-// main.c
-long	current_time(void);
-long	passed_time(long start_time);
 
 // utils.c
 void	ft_print(char *str, char *color, t_philo *philo);
 int		ft_atoi(char *str);
+int		ft_exit(char *error_msg);
 
 // philo_utils.c
 void	simulation(t_philo *philo);
 
 // init.c
 void	init_vars(int argc, char **argv, t_vars *vars);
-void	initForks(int num, sem_t *forks);
 
 // time.c
 long	current_time(void);
 long	passed_time(long start_time);
-void	unlock_forks(t_vars *vars);
 
-// system.h
-void	join_threads(pthread_t *threads, int n);
 
 // validate.c
 int		is_valid(int argc, char **argv);
 
-// monitor.c
-void	*monitor(void *arg);
 #endif

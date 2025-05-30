@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:33 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/28 15:47:03 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/30 19:17:41 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,15 @@ int	is_number(char *str)
 	return (1);
 }
 
+int	ft_exit(char *error_msg)
+{
+	printf("%s\n", error_msg);
+	return (1);
+}
+
 void	ft_print(char *str, char *color, t_philo *philo)
 {
-	if (!philo->vars->simulation_end)
-		printf("%s%ld %d %s\n", color, passed_time(philo->vars->start_time),
-			philo->id, str);
+	sem_wait(philo->log_sem);
+	printf("%s%ld %d %s\n", color, passed_time(philo->vars->start_time), philo->id, str);
+	sem_post(philo->log_sem);
 }

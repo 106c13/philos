@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:02:30 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/29 17:36:21 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/30 19:20:38 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,15 @@ void	init_vars(int argc, char **argv, t_vars *vars)
 	vars->simulation_end = 0;
 	sem_unlink("/forks");
 	sem_unlink("/sim_end");
+	sem_unlink("/waiter");
+	sem_unlink("/finish");
+	sem_unlink("/log");	
 	vars->forks = sem_open("/forks", O_CREAT, 0644, vars->num);
 	vars->end_sem = sem_open("/sim_end", O_CREAT, 0644, 0);
-}
-
-int	init_philosophers(int argc, char **argv, t_vars *vars)
-{
-	init_vars(argc, argv, vars);
-	if (!vars)
-		return (1);
-	return (0);
+	if (vars->num == 1)
+		vars->waiter = sem_open("/waiter", O_CREAT, 0644, 1);
+	else
+		vars->waiter = sem_open("/waiter", O_CREAT, 0644, vars->num - 1);
+	vars->finish_sem = sem_open("/finish", O_CREAT, 0644, vars->num);
+	vars->log_sem = sem_open("/log", O_CREAT, 0644, 1);
 }

@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/26 19:37:34 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/30 15:10:25 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	start_dining(t_philo *philo, t_vars *vars)
 	vars->start_time = current_time();
 	while (i < vars->num)
 	{
-		philo[i].last_time_eat = current_time();
+		philo[i].last_time_eat = vars->start_time();
 		pthread_create(&threads[i], NULL, simulation, &philo[i]);
 		i++;
 	}

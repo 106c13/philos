@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:02:43 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/29 17:39:04 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/30 19:51:34 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	t_philo_take_forks(t_philo *philo)
 {
-	printf("====\n");
+	sem_wait(philo->waiter);
 	sem_wait(philo->forks);
 	ft_print("has taken a fork", WHITE, philo);
 	if (philo->vars->num == 1)
@@ -22,14 +22,23 @@ int	t_philo_take_forks(t_philo *philo)
 		usleep(philo->vars->time_to_die);
 		sem_post(philo->forks);
 		sem_post(philo->end_sem);
-		sem_close(philo->forks);	
-		sem_close(philo->end_sem);	
+		sem_post(philo->waiter);
 		return (0);
 	}
 	sem_wait(philo->forks);
 	ft_print("has taken a fork", WHITE, philo);
 	return (1);
 }
+
+int	is_done(t_vars *vars)
+{
+	if (vars->number_of_meals == -1)
+		return (0);
+	if (vars->total >= vars->number_of_meals)
+		return (1);
+	return (0);
+}
+
 
 int	philo_eat(t_philo *philo)
 {
@@ -42,26 +51,35 @@ int	philo_eat(t_philo *philo)
 	ct = current_time();
 	if (ct - philo->last_time_eat > philo->vars->time_to_die)
 	{
-		ft_print("is dead", DARK, philo);
+		ft_print("died", DARK, philo);
+		sem_wait(philo->log_sem);
 		sem_post(philo->forks);
 		sem_post(philo->forks);
 		sem_post(philo->end_sem);
+		sem_post(philo->waiter);
 		return (0);
 	}
 	ft_print("is eating", RED, philo);
+	philo->last_time_eat = current_time();
 	usleep(philo->vars->time_to_eat * 1000);
 	ct = current_time();
 	if (ct - philo->last_time_eat > philo->vars->time_to_die)
 	{
-		ft_print("is dead", DARK, philo);
+		ft_print("died", DARK, philo);
+		sem_wait(philo->log_sem);
+		sem_post(philo->finish_sem);
 		sem_post(philo->forks);
 		sem_post(philo->forks);
 		sem_post(philo->end_sem);
+		sem_post(philo->waiter);
 		return (0);
 	}
-	philo->last_time_eat = current_time();
+	philo->vars->total++;
 	sem_post(philo->forks);
 	sem_post(philo->forks);
+	sem_post(philo->waiter);
+	if (is_done(philo->vars))
+		return (0);
 	return (1);
 }
 
@@ -74,6 +92,7 @@ int	philo_sleep(t_philo *philo)
 
 void	simulation(t_philo *philo)
 {
+	sem_wait(philo->finish_sem);
 	if (philo->id % 2 == 0)
 		usleep(500);
 	while (!philo->vars->simulation_end)
@@ -83,5 +102,17 @@ void	simulation(t_philo *philo)
 			break ;
 		if (!philo_sleep(philo))
 			break ;
+		usleep(400);
 	}
+	sem_post(philo->finish_sem);
+	sem_close(philo->finish_sem);
+	sem_close(philo->forks);
+	sem_close(philo->end_sem);
+	sem_close(philo->waiter);
+	sem_close(philo->log_sem);
+	sem_close(philo->vars->finish_sem);
+	sem_close(philo->vars->forks);
+	sem_close(philo->vars->end_sem);
+	sem_close(philo->vars->waiter);
+	sem_close(philo->vars->log_sem);
 }
