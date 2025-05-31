@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 18:52:36 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/31 20:17:37 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/31 20:24:21 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,8 @@ int	ft_usleep(long ms, t_philo *philo)
 			return (0);
 		}
 		if (ct - st >= ms)
-			break;
+			break ;
 		usleep(500);
 	}
 	return (1);
 }
-

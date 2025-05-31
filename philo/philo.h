@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:45 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/31 20:18:00 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/31 20:24:32 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	unlock_forks(t_vars *vars);
 
 // system.h
 void	join_threads(pthread_t *threads, int n);
-int	ft_usleep(long ms, t_philo *philo);
+int		ft_usleep(long ms, t_philo *philo);
 int		error(char *msg);
 
 // validate.c
