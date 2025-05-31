@@ -6,11 +6,34 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:02:43 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/30 19:51:34 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/31 20:12:01 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+
+int	ft_usleep(long ms, t_philo *philo)
+{
+	long	ct;
+	long	st;
+
+	st = current_time();
+	while (1)
+	{
+		ct = current_time();
+		if (ct - philo->last_time_eat >= philo->vars->time_to_die)
+		{
+			philo->last_time_eat = 0;
+			return (0);
+		}
+		if (ct - st >= ms)
+			break;
+		usleep(500);
+	}
+	return (1);
+}
+
 
 int	t_philo_take_forks(t_philo *philo)
 {
@@ -19,7 +42,8 @@ int	t_philo_take_forks(t_philo *philo)
 	ft_print("has taken a fork", WHITE, philo);
 	if (philo->vars->num == 1)
 	{
-		usleep(philo->vars->time_to_die);
+		ft_usleep(philo->vars->time_to_die, philo);
+		ft_print("died", DARK, philo);
 		sem_post(philo->forks);
 		sem_post(philo->end_sem);
 		sem_post(philo->waiter);
@@ -61,7 +85,7 @@ int	philo_eat(t_philo *philo)
 	}
 	ft_print("is eating", RED, philo);
 	philo->last_time_eat = current_time();
-	usleep(philo->vars->time_to_eat * 1000);
+	ft_usleep(philo->vars->time_to_eat, philo);
 	ct = current_time();
 	if (ct - philo->last_time_eat > philo->vars->time_to_die)
 	{
@@ -86,7 +110,7 @@ int	philo_eat(t_philo *philo)
 int	philo_sleep(t_philo *philo)
 {
 	ft_print("is sleeping", BLUE, philo);
-	usleep(philo->vars->time_to_sleep * 1000);
+	ft_usleep(philo->vars->time_to_sleep, philo);
 	return (1);
 }
 
@@ -104,15 +128,5 @@ void	simulation(t_philo *philo)
 			break ;
 		usleep(400);
 	}
-	sem_post(philo->finish_sem);
-	sem_close(philo->finish_sem);
-	sem_close(philo->forks);
-	sem_close(philo->end_sem);
-	sem_close(philo->waiter);
-	sem_close(philo->log_sem);
-	sem_close(philo->vars->finish_sem);
-	sem_close(philo->vars->forks);
-	sem_close(philo->vars->end_sem);
-	sem_close(philo->vars->waiter);
-	sem_close(philo->vars->log_sem);
+	close_sem(philo);
 }

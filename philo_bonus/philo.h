@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:45 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/30 19:19:16 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/31 20:16:06 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,10 @@ void	init_vars(int argc, char **argv, t_vars *vars);
 long	current_time(void);
 long	passed_time(long start_time);
 
-
 // validate.c
 int		is_valid(int argc, char **argv);
+
+// system.c
+void	close_sem(t_philo *philo);
 
 #endif

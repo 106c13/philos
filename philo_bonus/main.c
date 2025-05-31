@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 22:25:38 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/30 19:26:48 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/31 20:13:30 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	*meal_count(void *arg)
 		i++;
 		usleep(700);
 	}
-	sem_post(vars->log_sem);
 	printf("%s Exited normally\n", DEBUG);
 	sem_post(vars->end_sem);
 	return (NULL);
@@ -54,6 +53,7 @@ void	monitor(pid_t *pids, t_vars *vars)
 			printf("%sPhilosopher %d (PID %d) finished.\n", DEBUG, i + 1, pids[i]);
 		}
 	}
+	sem_post(vars->log_sem);
 	free(pids);
 	sem_close(vars->forks);	
 	sem_close(vars->end_sem);	

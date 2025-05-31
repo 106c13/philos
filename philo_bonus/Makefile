@@ -13,6 +13,7 @@ SRC = \
 	utils.c \
 	init.c \
 	validate.c \
+	system.c \
 	philo_utils.c
 
 OBJS = $(SRC:%.c=$(OBJDIR)/%.o)
