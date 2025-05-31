@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:02:43 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/26 19:35:38 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/05/31 20:18:53 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	philo_eat(t_philo *philo, int n)
 	if (ct - philo->last_time_eat > philo->vars->time_to_die)
 		return (0);
 	ft_print("is eating", RED, philo);
-	usleep(philo->vars->time_to_eat * 1000);
+	ft_usleep(philo->vars->time_to_eat, philo);
 	philo->last_time_eat = current_time();
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
@@ -66,7 +66,7 @@ int	philo_sleep(t_philo *philo)
 	if (philo->vars->simulation_end)
 		return (0);
 	ft_print("is sleeping", BLUE, philo);
-	usleep(philo->vars->time_to_sleep * 1000);
+	ft_usleep(philo->vars->time_to_sleep, philo);
 	return (1);
 }
 
