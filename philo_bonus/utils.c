@@ -45,6 +45,7 @@ int	ft_exit(char *error_msg)
 void	ft_print(char *str, char *color, t_philo *philo)
 {
 	sem_wait(philo->log_sem);
-	printf("%s%ld %d %s\n", color, passed_time(philo->vars->start_time), philo->id, str);
+	printf("%s%ld %d %s\n", color, passed_time(philo->vars->start_time),
+		philo->id, str);
 	sem_post(philo->log_sem);
 }

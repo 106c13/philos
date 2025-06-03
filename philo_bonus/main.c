@@ -15,9 +15,9 @@
 
 void	*meal_count(void *arg)
 {
-	int	i;
+	int		i;
 	t_vars	*vars;
-	
+
 	usleep(2000);
 	i = 0;
 	vars = (t_vars *)arg;
@@ -41,10 +41,9 @@ void	monitor(pid_t *pids, t_vars *vars)
 	sem_wait(vars->end_sem);
 	printf("%sMonitor stopped\n", DEBUG);
 	vars->simulation_end = 1;
-	pthread_join(mt, NULL);	
+	pthread_join(mt, NULL);
 	for (int j = 0; j < vars->num; j++)
 		kill(pids[j], SIGKILL);
-
 	for (int i = 0; i < vars->num; i++)
 	{
 		int status;
@@ -55,10 +54,10 @@ void	monitor(pid_t *pids, t_vars *vars)
 	}
 	sem_post(vars->log_sem);
 	free(pids);
-	sem_close(vars->forks);	
-	sem_close(vars->end_sem);	
-	sem_close(vars->waiter);	
-	sem_close(vars->finish_sem);	
+	sem_close(vars->forks);
+	sem_close(vars->end_sem);
+	sem_close(vars->waiter);
+	sem_close(vars->finish_sem);
 	sem_close(vars->log_sem);
 }
 
@@ -110,8 +109,6 @@ void	start_dining(t_vars *vars)
 	monitor(pids, vars);
 }
 
-
-
 int	main(int argc, char **argv)
 {
 	t_vars	vars;
@@ -122,11 +119,11 @@ int	main(int argc, char **argv)
 			return (ft_exit("Error!"));
 		init_vars(argc, argv, &vars);
 		start_dining(&vars);
-		sem_unlink("/forks");	
+		sem_unlink("/forks");
 		sem_unlink("/sim_end");
-		sem_unlink("/waiter");	
-		sem_unlink("/finish");	
-		sem_unlink("/log");	
+		sem_unlink("/waiter");
+		sem_unlink("/finish");
+		sem_unlink("/log");
 	}
 	else
 		printf("Usage: ./philo n t_die t_eat t_sleep [n_eat]\n");

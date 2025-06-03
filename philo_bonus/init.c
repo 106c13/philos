@@ -28,7 +28,7 @@ void	init_vars(int argc, char **argv, t_vars *vars)
 	sem_unlink("/sim_end");
 	sem_unlink("/waiter");
 	sem_unlink("/finish");
-	sem_unlink("/log");	
+	sem_unlink("/log");
 	vars->forks = sem_open("/forks", O_CREAT, 0644, vars->num);
 	vars->end_sem = sem_open("/sim_end", O_CREAT, 0644, 0);
 	if (vars->num == 1)

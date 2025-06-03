@@ -52,7 +52,8 @@ int	philo_eat(t_philo *philo, int n)
 	if (ct - philo->last_time_eat > philo->vars->time_to_die)
 		return (0);
 	ft_print("is eating", RED, philo);
-	ft_usleep(philo->vars->time_to_eat, philo);
+	if (!ft_usleep(philo->vars->time_to_eat, philo))
+		return (0);
 	philo->last_time_eat = current_time();
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
@@ -66,7 +67,8 @@ int	philo_sleep(t_philo *philo)
 	if (philo->vars->simulation_end)
 		return (0);
 	ft_print("is sleeping", BLUE, philo);
-	ft_usleep(philo->vars->time_to_sleep, philo);
+	if (!ft_usleep(philo->vars->time_to_sleep, philo))
+		return (0);
 	return (1);
 }
 

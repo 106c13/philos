@@ -20,7 +20,7 @@
 # include <sys/wait.h>
 # include <semaphore.h>
 # include <stdlib.h>
-#include <fcntl.h>
+# include <fcntl.h>
 
 # define RED "\033[38;2;228;126;104m"
 # define GREEN "\033[38;2;122;239;122m"

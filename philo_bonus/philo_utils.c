@@ -12,7 +12,6 @@
 
 #include "philo.h"
 
-
 int	ft_usleep(long ms, t_philo *philo)
 {
 	long	ct;
@@ -28,12 +27,11 @@ int	ft_usleep(long ms, t_philo *philo)
 			return (0);
 		}
 		if (ct - st >= ms)
-			break;
+			break ;
 		usleep(500);
 	}
 	return (1);
 }
-
 
 int	t_philo_take_forks(t_philo *philo)
 {
@@ -62,7 +60,6 @@ int	is_done(t_vars *vars)
 		return (1);
 	return (0);
 }
-
 
 int	philo_eat(t_philo *philo)
 {
