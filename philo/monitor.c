@@ -24,17 +24,34 @@ int	is_dead(t_philo philo)
 
 int	is_end(t_vars *vars)
 {
+	int	total;
+
 	if (vars->number_of_meals == -1)
 		return (0);
-	if (vars->total / vars->num >= vars->number_of_meals)
+	pthread_mutex_lock(&vars->meal_mutex);
+	total = vars->total;
+	pthread_mutex_unlock(&vars->meal_mutex);
+	if (total / vars->num >= vars->number_of_meals)
 		return (1);
 	return (0);
+}
+
+int	is_sim_end(t_vars *vars)
+{
+	int	result;
+
+	pthread_mutex_lock(&vars->end_mutex);
+	result = vars->simulation_end;
+	pthread_mutex_unlock(&vars->end_mutex);
+	return (result);
 }
 
 void	stop_simulation(t_vars *vars)
 {
 	pthread_mutex_lock(&vars->log_mutex);
+	pthread_mutex_lock(&vars->end_mutex);
 	vars->simulation_end = 1;
+	pthread_mutex_unlock(&vars->end_mutex);
 	unlock_forks(vars);
 	pthread_mutex_unlock(&vars->log_mutex);
 }

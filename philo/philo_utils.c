@@ -21,7 +21,7 @@ void	increment_total(t_vars *vars)
 
 int	t_philo_take_forks(t_philo *philo)
 {
-	if (philo->vars->simulation_end)
+	if (is_sim_end(philo->vars))
 		return (0);
 	pthread_mutex_lock(philo->right_fork);
 	ft_print("has taken a fork", WHITE, philo);
@@ -31,7 +31,7 @@ int	t_philo_take_forks(t_philo *philo)
 		pthread_mutex_unlock(philo->right_fork);
 		return (0);
 	}
-	if (philo->vars->simulation_end)
+	if (is_sim_end(philo->vars))
 		return (0);
 	pthread_mutex_lock(philo->left_fork);
 	ft_print("has taken a fork", WHITE, philo);
@@ -46,7 +46,7 @@ int	philo_eat(t_philo *philo, int n)
 		return (0);
 	if (!t_philo_take_forks(philo))
 		return (0);
-	if (philo->vars->simulation_end)
+	if (is_sim_end(philo->vars))
 		return (0);
 	ct = current_time();
 	if (ct - philo->last_time_eat > philo->vars->time_to_die)
@@ -64,7 +64,7 @@ int	philo_eat(t_philo *philo, int n)
 
 int	philo_sleep(t_philo *philo)
 {
-	if (philo->vars->simulation_end)
+	if (is_sim_end(philo->vars))
 		return (0);
 	ft_print("is sleeping", BLUE, philo);
 	if (!ft_usleep(philo->vars->time_to_sleep, philo))

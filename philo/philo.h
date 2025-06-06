@@ -39,6 +39,7 @@ typedef struct s_vars
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	log_mutex;
 	pthread_mutex_t	meal_mutex;
+	pthread_mutex_t	end_mutex;
 }	t_vars;
 
 typedef struct s_philo
@@ -85,4 +86,5 @@ int		is_valid(int argc, char **argv);
 
 // monitor.c
 void	*monitor(void *arg);
+int		is_sim_end(t_vars *vars);
 #endif

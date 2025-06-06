@@ -42,6 +42,7 @@ void	init_vars(int argc, char **argv, t_vars *vars)
 	vars->forks = init_forks(vars->num);
 	pthread_mutex_init(&vars->log_mutex, NULL);
 	pthread_mutex_init(&vars->meal_mutex, NULL);
+	pthread_mutex_init(&vars->end_mutex, NULL);
 }
 
 t_philo	*init_philosophers(int argc, char **argv, t_vars *vars)
