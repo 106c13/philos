@@ -6,7 +6,7 @@
 /*   By: haaghaja <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 19:02:43 by haaghaja          #+#    #+#             */
-/*   Updated: 2025/05/31 20:18:53 by haaghaja         ###   ########.fr       */
+/*   Updated: 2025/06/24 13:03:34 by haaghaja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	*simulation(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
 		usleep(300);
-	while (!philo->vars->simulation_end)
+	while (!is_sim_end(philo->vars))
 	{
 		ft_print("is thinking", GREEN, philo);
 		if (!philo_eat(philo, n))
